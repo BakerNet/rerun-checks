@@ -4,6 +4,7 @@ const github = require('@actions/github');
 async function run() {
   try {
     const checkNames = core.getInput('check-names').split(', ');
+    const pageSize = core.getInput('page-size') || undefined;
     const { owner, repo } = github.context.repo;
     const token = core.getInput('github-token');
     const octokit = github.getOctokit(token);
@@ -11,7 +12,7 @@ async function run() {
 
     core.info(`Branch: ${branch}`);
 
-    const checksResult = await octokit.rest.checks.listForRef({ owner, repo, ref: branch });
+    const checksResult = await octokit.rest.checks.listForRef({ owner, repo, ref: branch, per_page: pageSize });
 
     for (const checkName of checkNames) {
       const checkRun = checksResult.data.check_runs.find(check_run => check_run.name === checkName.trim());
