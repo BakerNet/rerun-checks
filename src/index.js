@@ -25,7 +25,7 @@ async function run() {
           core.info(`"${checkName}" job has been triggered again.`);
 
         } catch (error) {
-          if (error.message.includes('This workflow is already running')) {
+          if (error.message.includes('is already running')) {
             core.warning(`"${checkName}" job is already running.`);
           } else {
             throw error;
